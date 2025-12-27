@@ -17,11 +17,20 @@ function App() {
   rel="noopener noreferrer"
   className="github-str"
 >
-  ⭐ Star on GitHub
+  ☆ Star on GitHub
 </a>
 <section className='land'>
+<video
+    className="bg-video"
+    autoPlay
+    loop
+    muted
+    playsInline
+  >
+    <source src="/public/bg-video.mp4" type="video/mp4" />
+  </video>
   <div className='desc'> A lightweight discovery layer on top of GitHub. Browse, filter, and find the perfect open-source tools for your next project—all in one clean interface.
-    <Link to="/explore" className='primary-btn'>Get Started</Link>
+    <Link to="/explore" className='primary-btn'>Get Started </Link>
 
   </div>
 </section>
