@@ -1,7 +1,7 @@
 import { Routes, Route, Link } from "react-router-dom";
 import "./App.css";
 
-import Explore from "./pages/Explore"; // make sure this exists
+import Explore from "./pages/Explore"; 
 
 function App() {
   return (
@@ -20,9 +20,9 @@ function App() {
         </a>
       </header>
 
-      {/* Routes control what page is shown */}
+      
       <Routes>
-        {/* Landing Page */}
+
         <Route
           path="/"
           element={
@@ -34,7 +34,7 @@ function App() {
                 muted
                 playsInline
               >
-                {/* IMPORTANT: no /public in the path */}
+
                 <source src="/bg-video.mp4" type="video/mp4" />
               </video>
 
@@ -51,7 +51,7 @@ function App() {
           }
         />
 
-        {/* Explore Page */}
+
         <Route path="/explore" element={<Explore />} />
       </Routes>
     </>
