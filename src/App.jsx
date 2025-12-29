@@ -6,7 +6,9 @@ function App() {
   return (
     <div className="app-shell">
       <header className="navbar">
-        <div className="brand" >FinOSS</div>
+<Link to="/" className="brand">
+  FinOSS
+</Link>
         <a
           href="https://github.com/Harish-vinayagam/FinOSS"
           target="_blank"

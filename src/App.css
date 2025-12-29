@@ -16,7 +16,11 @@
 .brand {
   font-size: 2.5rem;
   font-weight: 700;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
 }
+
 .github-str {
   position: fixed;
   top: 1.7rem;
