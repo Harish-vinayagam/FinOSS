@@ -43,11 +43,11 @@
   color: #000000;
 }
 .land {
-  min-height: calc(100vh - 64px); 
+   position: relative;
+  min-height: 100vh;     /* 🔑 full viewport */
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  padding-top: 40vh;
+  align-items: center;
   font-size: 1.5rem;
 }
 .bg-video {
@@ -58,8 +58,8 @@
   width: 100%;
   height: 100%;
 
-  object-fit: cover;   /* fills screen properly */
-  z-index: -1;         /* puts it behind content */
+  object-fit: cover;   
+  z-index: -1;         
   opacity: 0.5; 
   filter: brightness(0.8);      
 }

@@ -30,6 +30,7 @@ function Explore() {
       <p className="subtitle">
         Popular repositories updated recently
       </p>
+      
 
       {loading ? (
         <p>Loading trending repositories...</p>
@@ -60,6 +61,7 @@ function Explore() {
         </div>
       )}
     </div>
+    
   );
 }
 
