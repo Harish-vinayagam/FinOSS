@@ -41,6 +41,7 @@ function Explore() {
 
   const handleRepoEnter = (repo) => {
     clearTimeout(closeTimer.current);
+    // If panel already open, swap repo immediately (no close/reopen flash)
     setSelectedRepo(repo);
   };
 

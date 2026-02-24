@@ -474,6 +474,21 @@ body{
   border-color: #555;
 }
 
+/* Fade transition when swapping repos */
+.panel-content--fading {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  pointer-events: none;
+}
+
+.panel-header,
+.panel-body {
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* Panel scrollable body */
 .panel-body {
   flex: 1;
