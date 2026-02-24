@@ -209,6 +209,78 @@ body{
   padding: 0 2rem;
 }
 
+/* ── Filter Bar ─────────────────────────────── */
+.filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  margin-bottom: 1rem;
+  border-top: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+  background: rgba(255,255,255,0.02);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filter-group--row {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #555;
+  white-space: nowrap;
+  min-width: 70px;
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.filter-chip {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  font-family: inherit;
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 20px;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-chip:hover {
+  border-color: #444;
+  color: #ccc;
+  background: #111;
+}
+
+.filter-chip.active {
+  background: #1a1a2e;
+  border-color: #6366f1;
+  color: #a5b4fc;
+  font-weight: 600;
+}
+
+.filter-count {
+  font-size: 0.8rem;
+  color: #555;
+  align-self: flex-end;
+  padding-top: 0.25rem;
+}
+
 .repo-list {
   display: flex;
   flex-direction: column;

@@ -1,4 +1,17 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
+
+const LANGUAGES = ["All", "JavaScript", "TypeScript", "Python", "Go", "Rust", "Java", "C++", "Ruby", "Shell"];
+const SORT_OPTIONS = [
+  { label: "⭐ Most Stars", value: "stars" },
+  { label: "🍴 Most Forks", value: "forks" },
+];
+const MIN_STARS_OPTIONS = [
+  { label: "Any", value: 0 },
+  { label: "1k+", value: 1000 },
+  { label: "10k+", value: 10000 },
+  { label: "50k+", value: 50000 },
+  { label: "100k+", value: 100000 },
+];
 
 // Returns today's date minus `days` in YYYY-MM-DD format
 function daysAgo(days) {
@@ -15,6 +28,11 @@ function Explore() {
   const [loading, setLoading] = useState(true);
   const [lastRefreshed, setLastRefreshed] = useState(null);
   const [error, setError] = useState(null);
+
+  // Filter state
+  const [selectedLang, setSelectedLang] = useState("All");
+  const [sortBy, setSortBy] = useState("stars");
+  const [minStars, setMinStars] = useState(0);
 
   const fetchTrendingRepos = useCallback(async (force = false) => {
     const today = new Date().toISOString().split("T")[0];
@@ -65,6 +83,29 @@ function Explore() {
     fetchTrendingRepos();
   }, [fetchTrendingRepos]);
 
+  const filteredRepos = useMemo(() => {
+    let result = [...repos];
+
+    // Filter by language
+    if (selectedLang !== "All") {
+      result = result.filter((r) => r.language === selectedLang);
+    }
+
+    // Filter by min stars
+    if (minStars > 0) {
+      result = result.filter((r) => r.stargazers_count >= minStars);
+    }
+
+    // Sort
+    result.sort((a, b) =>
+      sortBy === "forks"
+        ? b.forks_count - a.forks_count
+        : b.stargazers_count - a.stargazers_count
+    );
+
+    return result;
+  }, [repos, selectedLang, minStars, sortBy]);
+
   return (
     <div className="explore-page">
       <div className="explore-header-row">
@@ -87,13 +128,71 @@ function Explore() {
         </button>
       </div>
 
+      {/* Filter Bar */}
+      <div className="filter-bar">
+        {/* Language */}
+        <div className="filter-group">
+          <span className="filter-label">Language</span>
+          <div className="filter-chips">
+            {LANGUAGES.map((lang) => (
+              <button
+                key={lang}
+                className={`filter-chip ${selectedLang === lang ? "active" : ""}`}
+                onClick={() => setSelectedLang(lang)}
+              >
+                {lang}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Sort */}
+        <div className="filter-group filter-group--row">
+          <span className="filter-label">Sort by</span>
+          <div className="filter-chips">
+            {SORT_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                className={`filter-chip ${sortBy === opt.value ? "active" : ""}`}
+                onClick={() => setSortBy(opt.value)}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Min Stars */}
+        <div className="filter-group filter-group--row">
+          <span className="filter-label">Min Stars</span>
+          <div className="filter-chips">
+            {MIN_STARS_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                className={`filter-chip ${minStars === opt.value ? "active" : ""}`}
+                onClick={() => setMinStars(opt.value)}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Results count */}
+        <span className="filter-count">
+          {filteredRepos.length} {filteredRepos.length === 1 ? "repo" : "repos"}
+        </span>
+      </div>
+
       {error && <p className="error-msg">{error}</p>}
 
       {loading ? (
         <p className="loading-msg">Loading trending repositories...</p>
+      ) : filteredRepos.length === 0 ? (
+        <p className="loading-msg">No repositories match the selected filters.</p>
       ) : (
         <div className="repo-list">
-          {repos.map((repo) => (
+          {filteredRepos.map((repo) => (
             <a
               key={repo.id}
               href={repo.html_url}
