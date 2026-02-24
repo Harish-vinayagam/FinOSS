@@ -1,4 +1,5 @@
-import { useEffect, useState, useCallback, useMemo } from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
+import ReadmePanel from "../components/ReadmePanel";
 
 const LANGUAGES = ["All", "JavaScript", "TypeScript", "Python", "Go", "Rust", "Java", "C++", "Ruby", "Shell"];
 const SORT_OPTIONS = [
@@ -33,6 +34,27 @@ function Explore() {
   const [selectedLang, setSelectedLang] = useState("All");
   const [sortBy, setSortBy] = useState("stars");
   const [minStars, setMinStars] = useState(0);
+
+  // README panel state
+  const [selectedRepo, setSelectedRepo] = useState(null);
+  const closeTimer = useRef(null);
+
+  const handleRepoEnter = (repo) => {
+    clearTimeout(closeTimer.current);
+    setSelectedRepo(repo);
+  };
+
+  const handleRepoLeave = () => {
+    closeTimer.current = setTimeout(() => setSelectedRepo(null), 300);
+  };
+
+  const handlePanelEnter = () => {
+    clearTimeout(closeTimer.current);
+  };
+
+  const handlePanelLeave = () => {
+    closeTimer.current = setTimeout(() => setSelectedRepo(null), 300);
+  };
 
   const fetchTrendingRepos = useCallback(async (force = false) => {
     const today = new Date().toISOString().split("T")[0];
@@ -193,12 +215,13 @@ function Explore() {
       ) : (
         <div className="repo-list">
           {filteredRepos.map((repo) => (
-            <a
+            <div
               key={repo.id}
-              href={repo.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
               className="repo-row"
+              onMouseEnter={() => handleRepoEnter(repo)}
+              onMouseLeave={handleRepoLeave}
+              role="button"
+              tabIndex={0}
             >
               <div className="repo-main">
                 <h3>{repo.full_name}</h3>
@@ -211,11 +234,29 @@ function Explore() {
                 <span className="repo-lang">{repo.language || "—"}</span>
                 <span>⭐ {repo.stargazers_count.toLocaleString()}</span>
                 <span>🍴 {repo.forks_count.toLocaleString()}</span>
+                <a
+                  href={repo.html_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="repo-gh-link"
+                  onClick={(e) => e.stopPropagation()}
+                  title="Open on GitHub"
+                >
+                  ↗
+                </a>
               </div>
-            </a>
+            </div>
           ))}
         </div>
       )}
+
+      {/* README slide-in panel */}
+      <ReadmePanel
+        repo={selectedRepo}
+        onClose={() => setSelectedRepo(null)}
+        onPanelEnter={handlePanelEnter}
+        onPanelLeave={handlePanelLeave}
+      />
     </div>
   );
 }
